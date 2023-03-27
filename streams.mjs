@@ -31,3 +31,9 @@ const betterWater = new Transform({
     cb(stringfied)
   }
 })
+
+asyncPipeLine(
+  extract, 
+  betterWater,
+  process.stdout
+)

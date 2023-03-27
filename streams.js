@@ -13,12 +13,3 @@ function * waterExtractor () {
     yield matter
   }
 }
-
-const fillTank = new Readable({
-  read(){
-    for(const chunk of waterExtractor()){
-      this.push(chunk)
-    }
-    this.push(null)
-  }
-})

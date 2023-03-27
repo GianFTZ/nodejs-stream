@@ -1,4 +1,4 @@
-import { pipeline, Readable, Writable } from 'node:stream'
+import { pipeline, Readable, Transform, Writable } from 'node:stream'
 import { promisify } from 'node:util'
 
 const asyncPipeLine = promisify(pipeline)
@@ -14,11 +14,20 @@ function * waterExtractor () {
   }
 }
 
-const fillTank = new Readable({
+const extract = new Readable({
   read(){
     for(const chunk of waterExtractor()){
       this.push(chunk)
     }
     this.push(null)
+  }
+})
+
+const betterWater = new Transform({
+  transform(chunk, _ec, cb){
+    const data = JSON.parse(chunk)
+    data.water.mlQuantity = data.water.mlQuantity - 0.1
+    const stringfied = JSON.stringify(data)
+    cb(stringfied)
   }
 })

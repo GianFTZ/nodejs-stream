@@ -17,7 +17,8 @@ function * waterExtractor () {
 const extract = new Readable({
   read(){
     for(const chunk of waterExtractor()){
-      this.push(chunk)
+      const stringfied = JSON.stringify(chunk)
+      this.push(stringfied)
     }
     this.push(null)
   }
@@ -28,7 +29,7 @@ const betterWater = new Transform({
     const data = JSON.parse(chunk)
     data.water.mlQuantity = data.water.mlQuantity - 0.1
     const stringfied = JSON.stringify(data)
-    cb(stringfied)
+    cb(null, stringfied)
   }
 })
 
